@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.urls import path
 
 from chat.views import index
+from chat.views import loginPage
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('chat/', index),
-
+    path("admin/", admin.site.urls),
+    path("chat/", index),
+    path("login/", loginPage),
 ]

@@ -16,9 +16,9 @@
 
     <style>
       .page-content {
-        display: flex;
+        display: grid;
         justify-content: center;
-        align-items: center;
+        align-content: center;
         height: 100%;
       }
     </style>
@@ -29,7 +29,10 @@
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
           <!-- Title -->
-          <span class="mdl-layout-title">Hallo {{ request.user }}</span>
+          <span class="mdl-layout-title"
+            >{% if request.user.is_authenticated %}Hallo {{ request.user }} {% else %}
+            Hello please log in. {% endif %}</span
+          >
           <!-- Add spacer, to align navigation to the right -->
           <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
@@ -52,9 +55,26 @@
       </div>
       <main class="mdl-layout__content">
         <div class="page-content">
-          <form action="#">
+          <div>
+            {% if request.user.is_authenticated %} {% for message in messages %}
+
+            <div>
+              <span>{{message.author}}:</span>
+              <p>{{message.text}}</p>
+            </div>
+
+            {% endfor %}
+          </div>
+
+          <form action="/chat/" method="post">
+            {% csrf_token %}
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="sample3" />
+              <input
+                class="mdl-textfield__input"
+                name="textmessage"
+                type="text"
+                id="sample3"
+              />
               <label class="mdl-textfield__label" for="sample3">Text...</label>
             </div>
             <button
@@ -62,6 +82,12 @@
             >
               Button
             </button>
+            {% else %}
+
+            <h1>Nicht eingeloggt</h1>
+            <p>log in <a href="/login/">here.</a></p>
+
+            {% endif %}
           </form>
         </div>
       </main>
