@@ -3,6 +3,7 @@ from django.shortcuts import render
 from chat.models import Chat, Message
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 @login_required(login_url="/login/")
@@ -30,6 +31,19 @@ def loginPage(request):
             login(request, user)
             return HttpResponseRedirect("/chat/")
         else:
-            return render(request, "chat/login.html", {"wrongPassword": True})
+            return render(request, "chat/auth/login.html", {"wrongPassword": True})
 
-    return render(request, "chat/login.html")
+    return render(request, "chat/auth/login.html")
+
+
+def registerPage(request):
+    if request.method == "POST":
+        user = User.objects.create_user(
+            username=request.POST.get("username"),
+            email=request.POST.get("email"),
+            password=request.POST.get("password"),
+        )
+        if user:
+            return HttpResponseRedirect("/login/")
+
+    return render(request, "chat/auth/register.html")
