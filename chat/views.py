@@ -4,6 +4,8 @@ from chat.models import Chat, Message
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
+from django.http import JsonResponse
 
 
 @login_required(login_url="/login/")
@@ -11,12 +13,16 @@ def index(request):
     if request.method == "POST":
         print(request.POST["textmessage"])
         myChat = Chat.objects.get(id=1)
-        Message.objects.create(
+        newMessage = Message.objects.create(
             text=request.POST["textmessage"],
             author=request.user,
             receiver=request.user,
             chat=myChat,
         )
+
+        messageAsJson = serializers.serialize("json", [newMessage])
+        return JsonResponse(messageAsJson[1:-1], safe=False)
+
     chatMessages = Message.objects.filter(chat__id=1)
     return render(request, "chat/index.html", {"messages": chatMessages})
 

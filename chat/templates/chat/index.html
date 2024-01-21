@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content%}
 
-<div>
+<div id="messagesContainer">
   {% if request.user.is_authenticated %} {% for message in messages %}
 
   <div>
@@ -11,11 +11,20 @@
   {% endfor %}
 </div>
 
-<form action="/chat/" method="post">
+<form
+  onsubmit="sendMessage(); return false;"
+  method="post"
+  data-csrf-token="{{ csrf_token }}"
+>
   {% csrf_token %}
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" name="textmessage" type="text" id="sample3" />
-    <label class="mdl-textfield__label" for="sample3">Text...</label>
+    <input
+      class="mdl-textfield__input"
+      name="textmessage"
+      type="text"
+      id="messageInput"
+    />
+    <label class="mdl-textfield__label" for="messageInput">Text...</label>
   </div>
   <button
     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
