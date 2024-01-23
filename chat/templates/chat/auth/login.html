@@ -1,15 +1,51 @@
 {% extends "base.html" %} {% block content%}
 
-<h1>LOGIN</h1>
+<div class="mdl-card">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Login</h2>
+  </div>
 
-{% if wrongPassword %}
-<span>FALSCH</span>
-{% endif %}
+  <div class="mdl-card__supporting-text">
+    Welcome! please log in to your Account. <br />
+    You don't have an account yet? Register <a href="/register/">here</a>.
+  </div>
+  <div class="mdl-card__actions padding_16px">
+    <form class="login-form" action="/login/" method="post">
+      {% csrf_token %}
 
-<form action="/login/" method="post" style="display: grid">
-  {% csrf_token %}
-  <input type="text" name="username" />
-  <input type="password" name="password" />
-  <button>Submit</button>
-</form>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input
+          class="mdl-textfield__input"
+          name="username"
+          type="text"
+          id="usernameInput"
+        />
+        <label class="mdl-textfield__label" for="usernameInput">Username</label>
+      </div>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input
+          class="mdl-textfield__input"
+          name="password"
+          type="password"
+          id="passwordInput"
+        />
+        <label class="mdl-textfield__label" for="passwordInput">Passwort</label>
+      </div>
+
+      {% if wrongPassword %}
+      <div class="invalid_password">
+        Invalid email or password. Please double-check your entries.
+      </div>
+      {% endif %}
+
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+
 {% endblock %}

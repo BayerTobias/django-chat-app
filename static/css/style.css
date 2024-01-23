@@ -4,3 +4,22 @@
   align-content: center;
   height: 100%;
 }
+
+.page-content > h1 {
+  font-size: 46px;
+  font-weight: 700;
+}
+
+.login-form > p {
+  margin-top: 16px;
+}
+
+.invalid_password {
+  font-size: 12px;
+  color: red;
+  margin-bottom: 20px;
+}
+
+.padding_16px {
+  padding: 16px;
+}

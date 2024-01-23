@@ -3,7 +3,8 @@
 <div id="messagesContainer">
   {% if request.user.is_authenticated %} {% for message in messages %}
 
-  <div>
+  <div class="message">
+    <span class="date">{{message.created_at}}</span>
     <span>{{message.author}}:</span>
     <p>{{message.text}}</p>
   </div>

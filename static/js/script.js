@@ -26,11 +26,13 @@ async function renderMessage(response) {
   const receiver = jsonData.fields.receiver;
 
   messagesContainer += /*html*/ `
-     <div>
-    <span>{{message.author}}:</span>
-    <p>{{message.text}}</p>
+    <div>
+      <span>{{message.author}}:</span>
+      <p>${text}</p>
   </div>
   `;
+}
 
-  console.log(text, date, author);
+async function logout() {
+  console.log("logout");
 }
