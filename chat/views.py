@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from chat.models import Chat, Message
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
@@ -32,6 +32,7 @@ def loginPage(request):
         user = authenticate(
             username=request.POST.get("username"), password=request.POST.get("password")
         )
+        print("User IS:", user)
 
         if user:
             login(request, user)
@@ -53,3 +54,9 @@ def registerPage(request):
             return HttpResponseRedirect("/login/")
 
     return render(request, "chat/auth/register.html")
+
+
+def logout_user(request):
+    if request.method == "POST":
+        logout(request)
+        return HttpResponseRedirect("/login/")

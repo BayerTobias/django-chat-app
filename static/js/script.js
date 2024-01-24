@@ -34,5 +34,17 @@ async function renderMessage(response) {
 }
 
 async function logout() {
-  console.log("logout");
+  let formData = new FormData();
+  let token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+  formData.append("csrfmiddlewaretoken", token);
+
+  try {
+    let response = await fetch("/logout/", {
+      method: "POST",
+      body: formData,
+    });
+    // window.location.href = "/login/";
+  } catch (err) {
+    console.error(err);
+  }
 }
