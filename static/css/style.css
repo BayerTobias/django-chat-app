@@ -23,3 +23,7 @@
 .padding_16px {
   padding: 16px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

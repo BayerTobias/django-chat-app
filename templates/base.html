@@ -24,16 +24,18 @@
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
           <!-- Title -->
-          <span class="mdl-layout-title"
-            >{% if request.user.is_authenticated %} Hallo {{ request.user }} {%
-            else %} Hello please log in. {% endif %}</span
-          >
+
+          {% if request.user.is_authenticated %}
+          <span class="mdl-layout-title"> Hello {{ request.user }} </span>
+          {% else %}
+          <span class="mdl-layout-title"> Hello please log in. </span>
+          {% endif %}
           <!-- Add spacer, to align navigation to the right -->
           <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
           <nav class="mdl-navigation mdl-layout--large-screen-only">
             {% if request.user.is_authenticated %}
-            <a class="mdl-navigation__link" onclick="logout()">Logout</a>
+            <a class="mdl-navigation__link cursor-pointer" onclick="logout()">Logout</a>
             {% endif %}
           </nav>
         </div>
@@ -43,9 +45,9 @@
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link" href="/login/">Login</a>
           <a class="mdl-navigation__link" href="/register/">Register</a>
-          <a class="mdl-navigation__link" href="/chat/">Chat</a>
           {% if request.user.is_authenticated %} {% csrf_token %}
-          <a class="mdl-navigation__link" onclick="logout()">Logout</a>
+          <a class="mdl-navigation__link" href="/chat/">Chat</a>
+          <a class="mdl-navigation__link cursor-pointer" onclick="logout()">Logout</a>
           {% endif %}
         </nav>
       </div>

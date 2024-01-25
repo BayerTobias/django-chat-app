@@ -27,7 +27,7 @@ def index(request):
     return render(request, "chat/index.html", {"messages": chatMessages})
 
 
-def loginPage(request):
+def login_page(request):
     if request.method == "POST":
         user = authenticate(
             username=request.POST.get("username"), password=request.POST.get("password")
@@ -43,7 +43,7 @@ def loginPage(request):
     return render(request, "chat/auth/login.html")
 
 
-def registerPage(request):
+def register_page(request):
     if request.method == "POST":
         user = User.objects.create_user(
             username=request.POST.get("username"),
