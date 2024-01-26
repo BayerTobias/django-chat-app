@@ -1,43 +1,55 @@
-{% extends "base.html" %} {% block content%}
+{% extends "base.html" %} {% block content%} {% if request.user.is_authenticated %}
 
-<div id="messagesContainer">
-  {% if request.user.is_authenticated %} {% for message in messages %}
+<div class="chat-content">
+  <div id="messagesContainer">
+    {% for message in messages %}
 
-  <div class="message">
-    <span class="date">{{message.created_at}}</span>
-    <span>{{message.author}}:</span>
-    <p>{{message.text}}</p>
+    <div class="message">
+      <span class="date">{{message.created_at}}</span>
+      <span class="sender">{{message.author}}:</span>
+      <p class="message-content">{{message.text}}</p>
+    </div>
+
+    {% endfor %}
   </div>
 
-  {% endfor %}
-</div>
-
-<form
-  onsubmit="sendMessage(); return false;"
-  method="post"
-  data-csrf-token="{{ csrf_token }}"
->
-  {% csrf_token %}
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input
-      class="mdl-textfield__input"
-      name="textmessage"
-      type="text"
-      id="messageInput"
-    />
-    <label class="mdl-textfield__label" for="messageInput">Text...</label>
-  </div>
-  <button
-    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+  <form
+    onsubmit="sendMessage(); return false;"
+    method="post"
+    data-csrf-token="{{ csrf_token }}"
+    class="send-message-form"
   >
-    Button
-  </button>
-  {% else %}
+    {% csrf_token %} {% if request.user.is_authenticated %}
+    <input
+      type="hidden"
+      name="username"
+      id="userName"
+      value="{{ request.user.username }}"
+    />
+    {% endif %}
+    <div
+      class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label message-input"
+    >
+      <input
+        class="mdl-textfield__input"
+        name="textmessage"
+        type="text"
+        id="messageInput"
+      />
+      <label class="mdl-textfield__label" for="messageInput">Text...</label>
+    </div>
+    <button
+      class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+    >
+      Button
+    </button>
+    {% else %}
 
-  <h1>Nicht eingeloggt</h1>
-  <p>log in <a href="/login/">here.</a></p>
+    <h1>Nicht eingeloggt</h1>
+    <p>log in <a href="/login/">here.</a></p>
 
-  {% endif %}
-</form>
+    {% endif %}
+  </form>
+</div>
 
 {% endblock %}

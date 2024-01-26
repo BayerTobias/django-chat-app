@@ -56,7 +56,13 @@ def register_page(request):
     return render(request, "chat/auth/register.html")
 
 
+# def logout_chat(request):
+#     """
+#     Logs user out
+#     """
+#     # Note that logout() doesn’t throw any errors if the user wasn’t logged in.
+
+
 def logout_user(request):
-    if request.method == "POST":
-        logout(request)
-        return HttpResponseRedirect("/login/")
+    logout(request)
+    return HttpResponseRedirect("/login/")

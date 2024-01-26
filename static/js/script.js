@@ -1,50 +1,55 @@
 async function sendMessage() {
   const msg = messageInput.value;
+  const options = { month: "short", day: "numeric", year: "numeric" };
+  const date = new Date().toLocaleDateString("en-US", options);
+  const sender = userName.value;
   let token = document.querySelector("form").dataset.csrfToken;
 
   let formData = new FormData();
   formData.append("textmessage", msg);
   formData.append("csrfmiddlewaretoken", token);
+
+  renderSentMessage(msg, date, sender);
+
   try {
     let response = await fetch("/chat/", {
       method: "POST",
       body: formData,
     });
-    renderMessage(response);
+    renderMessage(msg, date, sender);
   } catch (err) {
     console.error(err);
   }
 }
 
-async function renderMessage(response) {
-  const data = await response.json();
-  const jsonData = JSON.parse(data);
-
-  const text = jsonData.fields.text;
-  const date = jsonData.fields.created_at;
-  const author = jsonData.fields.author;
-  const receiver = jsonData.fields.receiver;
-
-  messagesContainer += /*html*/ `
-    <div>
-      <span>{{message.author}}:</span>
-      <p>${text}</p>
-  </div>
-  `;
+function renderMessage(msg, date, sender) {
+  deleteElements = document.querySelectorAll(".delete");
+  deleteElements.forEach((message) => {
+    message.remove();
+  });
+  messagesContainer.innerHTML += getMessage(true, msg, date, sender);
 }
 
-async function logout() {
-  let formData = new FormData();
-  let token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-  formData.append("csrfmiddlewaretoken", token);
+function renderSentMessage(msg, date, sender) {
+  messagesContainer.innerHTML += getMessage(false, msg, date, sender);
+}
 
-  try {
-    let response = await fetch("/logout/", {
-      method: "POST",
-      body: formData,
-    });
-    // window.location.href = "/login/";
-  } catch (err) {
-    console.error(err);
+function getMessage(success, msg, date, sender) {
+  if (success) {
+    return /*html*/ `
+    <div class="message">
+      <span class="date">${date}</span>
+      <span class="sender">${sender}</span>
+      <p class="message-content">${msg}</p>
+    </div>
+    `;
+  } else {
+    return /*html*/ `
+    <div class="message delete">
+    <span class="date">${date}</span>
+      <span class="sender">${sender}</span>
+      <p class="message-content">${msg}</p>
+    </div>
+    `;
   }
 }
