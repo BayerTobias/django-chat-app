@@ -1,16 +1,11 @@
 async function sendMessage() {
   const msg = messageInput.value;
+  const sender = userName.value;
   const options = { month: "short", day: "numeric", year: "numeric" };
   const date = new Date().toLocaleDateString("en-US", options);
-  const sender = userName.value;
-  let token = document.querySelector("form").dataset.csrfToken;
-
-  let formData = new FormData();
-  formData.append("textmessage", msg);
-  formData.append("csrfmiddlewaretoken", token);
+  const formData = getFormData(msg);
 
   renderSentMessage(msg, date, sender);
-
   try {
     let response = await fetch("/chat/", {
       method: "POST",
@@ -20,6 +15,15 @@ async function sendMessage() {
   } catch (err) {
     console.error(err);
   }
+}
+
+function getFormData(msg) {
+  let token = document.querySelector("form").dataset.csrfToken;
+
+  let formData = new FormData();
+  formData.append("textmessage", msg);
+  formData.append("csrfmiddlewaretoken", token);
+  return formData;
 }
 
 function renderMessage(msg, date, sender) {
@@ -51,5 +55,13 @@ function getMessage(success, msg, date, sender) {
       <p class="message-content">${msg}</p>
     </div>
     `;
+  }
+}
+
+async function logout() {
+  try {
+    await fetch("/logout/", { method: "GET" });
+  } catch (err) {
+    console.error(err);
   }
 }

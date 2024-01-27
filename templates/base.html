@@ -47,7 +47,7 @@
           <a class="mdl-navigation__link" href="/register/">Register</a>
           {% if request.user.is_authenticated %} {% csrf_token %}
           <a class="mdl-navigation__link" href="/chat/">Chat</a>
-          <a class="mdl-navigation__link log-out" href="/logout/">Log Out</a>
+          <a class="mdl-navigation__link log-out" onclick="logout()">Log Out</a>
           {% endif %}
         </nav>
       </div>

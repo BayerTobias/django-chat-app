@@ -10,9 +10,8 @@ from django.http import JsonResponse
 
 @login_required(login_url="/login/")
 def index(request):
+    myChat, created = Chat.objects.get_or_create()
     if request.method == "POST":
-        print(request.POST["textmessage"])
-        myChat = Chat.objects.get(id=1)
         newMessage = Message.objects.create(
             text=request.POST["textmessage"],
             author=request.user,
@@ -23,7 +22,7 @@ def index(request):
         messageAsJson = serializers.serialize("json", [newMessage])
         return JsonResponse(messageAsJson[1:-1], safe=False)
 
-    chatMessages = Message.objects.filter(chat__id=1)
+    chatMessages = Message.objects.filter(chat__id=myChat.id)
     return render(request, "chat/index.html", {"messages": chatMessages})
 
 
@@ -54,13 +53,6 @@ def register_page(request):
             return HttpResponseRedirect("/login/")
 
     return render(request, "chat/auth/register.html")
-
-
-# def logout_chat(request):
-#     """
-#     Logs user out
-#     """
-#     # Note that logout() doesn’t throw any errors if the user wasn’t logged in.
 
 
 def logout_user(request):

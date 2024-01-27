@@ -23,6 +23,7 @@
   align-items: flex-end;
   gap: 8px;
   overflow-y: auto;
+  margin-top: auto;
 }
 
 .message {
