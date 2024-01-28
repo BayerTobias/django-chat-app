@@ -59,9 +59,5 @@ function getMessage(success, msg, date, sender) {
 }
 
 async function logout() {
-  try {
-    await fetch("/logout/", { method: "GET" });
-  } catch (err) {
-    console.error(err);
-  }
+  window.location.href = "/logout/";
 }
