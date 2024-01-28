@@ -1,11 +1,11 @@
 async function sendMessage() {
   const msg = messageInput.value;
   const sender = userName.value;
-  const options = { month: "short", day: "numeric", year: "numeric" };
-  const date = new Date().toLocaleDateString("en-US", options);
+  const date = getCurrentDate();
   const formData = getFormData(msg);
 
   renderSentMessage(msg, date, sender);
+  messageInput.value = "";
   try {
     let response = await fetch("/chat/", {
       method: "POST",
@@ -24,6 +24,11 @@ function getFormData(msg) {
   formData.append("textmessage", msg);
   formData.append("csrfmiddlewaretoken", token);
   return formData;
+}
+
+function getCurrentDate() {
+  const options = { month: "short", day: "numeric", year: "numeric" };
+  return new Date().toLocaleDateString("en-US", options);
 }
 
 function renderMessage(msg, date, sender) {
@@ -56,6 +61,13 @@ function getMessage(success, msg, date, sender) {
     </div>
     `;
   }
+}
+
+function validateInput() {
+  const messageInput = document.getElementById("messageInput");
+  const submitButton = document.getElementById("submitButton");
+
+  submitButton.disabled = messageInput.value.length === 0;
 }
 
 async function logout() {

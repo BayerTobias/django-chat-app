@@ -35,10 +35,13 @@
         name="textmessage"
         type="text"
         id="messageInput"
+        oninput="validateInput()"
       />
       <label class="mdl-textfield__label" for="messageInput">Text...</label>
     </div>
     <button
+      id="submitButton"
+      disabled
       class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
     >
       Send
